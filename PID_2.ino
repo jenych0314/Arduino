@@ -32,8 +32,11 @@
 #define _INTERVAL_SERIAL 100
 
 // PID parameters
+// 수정 필요
 #define _KP 1.0
 #define _KD 20.0
+//#define _KP 1.0
+//#define _KD 30.0
 
 // Servo instance
 Servo myservo;
@@ -156,7 +159,7 @@ void loop() {
     Serial.print(", duty_curr: ");
     Serial.print(map(duty_curr, 1000, 2000, 410, 510));
     Serial.println(", Min: 100, Low: 200, dist_target: 255, High: 310, Max: 410");
-//    Serial.println("");
+    Serial.println("");
   }
 }
 
@@ -168,7 +171,8 @@ float ir_distance(void) { // return value unit: mm
 }
 
 float dist_filter(float raw_dist) { // return value unit: mm
-  float raw_values[7] = {80, 122, 173, 217, 271, 303, 317};
+//  float raw_values[7] = {80, 122, 173, 217, 271, 303, 317};
+  float raw_values[7] = {72, 112, 155, 190, 232, 252, 263};
   float original_values[7] = {100, 150, 200, 250, 300, 350, 400};
   float check_point_size = sizeof(raw_values)/sizeof(float);
 
