@@ -32,11 +32,8 @@
 #define _INTERVAL_SERIAL 100
 
 // PID parameters
-// 수정 필요
 #define _KP 1.0
 #define _KD 20.0
-//#define _KP 1.0
-//#define _KD 30.0
 
 // Servo instance
 Servo myservo;
