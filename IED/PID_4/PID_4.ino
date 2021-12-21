@@ -14,17 +14,16 @@
 #define _DIST_MAX 410
 
 // Distance sensor
-#define _DIST_ALPHA 0.16
-//#define NUM 20
+#define _DIST_ALPHA 0.18
 
 // Servo range
-#define _DUTY_MIN (1635 - 200)
+#define _DUTY_MIN (1635 - 205)
 #define _DUTY_NEU 1635
-#define _DUTY_MAX (1635 + 260)
+#define _DUTY_MAX (1635 + 265)
 
 // Servo speed control
 #define _SERVO_ANGLE 30
-#define _SERVO_SPEED 60
+#define _SERVO_SPEED 62
 #define _RAMPUP_TIME 19 // servo speed rampup (0 to max) time (unit: ms)
 
 // Event periods
@@ -33,11 +32,10 @@
 #define _INTERVAL_SERIAL 100
 
 // PID parameters
-#define _KP 1.39
-//#define _KD 39.72
-#define _KD 44.24
-#define _KI 1.81
-#define _ITERM_MAX 9.8
+#define _KP 1.43
+#define _KD 43.7
+#define _KI 1.79
+#define _ITERM_MAX 11.2
 
 // Servo instance
 Servo myservo;
@@ -92,8 +90,6 @@ void setup() {
 }
 
 void loop() {
-  //    while(1){}
-
   // Event generator
   unsigned long time_curr = millis();
   if (time_curr >= last_sampling_time_dist + _INTERVAL_DIST) {
@@ -116,18 +112,7 @@ void loop() {
     // get a distance reading from the distance sensor
     dist_raw = ir_distance();
     dist_raw_ema = _DIST_ALPHA * dist_raw + (1 - _DIST_ALPHA) * dist_raw_ema;
-    //    for (int i = 0; i < NUM - 1; i++) {
-    //      sensorValues[i] = sensorValues[i + 1];
-    //    }
-    //    sensorValues[NUM - 1] = dist_raw;
-    //    for (int i = 0; i < NUM; i++) {
-    //      dist_cali += sensorValues[i];
-    //    }
-    //    dist_cali /= NUM;
-    //
-    //    dist_cali = dist_filter(dist_cali);
     dist_cali = dist_filter(dist_raw_ema);
-    //    dist_cali = dist_filter(dist_raw);
     dist_ema = _DIST_ALPHA * dist_cali + (1 - _DIST_ALPHA) * dist_ema;
 
     // PID control logic
@@ -202,7 +187,7 @@ void loop() {
     //    Serial.print("EMA: ");
     //    Serial.print(dist_ema);
     //    Serial.print(", RAW: ");
-    //    Serial.print(map(dist_raw, -1000, 1000, 100, 410));
+    //    Serial.print(dist_raw);
     //    Serial.println("");
   }
 }
@@ -215,7 +200,7 @@ float ir_distance(void) { // return value unit: mm
 }
 
 float dist_filter(float raw_dist) { // return value unit: mm
-  float raw_values[7] = {69, 106, 146, 178, 212, 238, 246};
+  float raw_values[7] = {72, 111, 155, 186, 229, 257, 280};
   float original_values[7] = {100, 150, 200, 250, 300, 350, 400};
   float check_point_size = sizeof(raw_values) / sizeof(float);
 
